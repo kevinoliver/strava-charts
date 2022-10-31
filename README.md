@@ -6,10 +6,10 @@ You will need to [download an export of your Strava activities](https://support.
 
 Here's what a couple years of my data looks like.
 
-![distance](images/distance.tiff)
+![distance](images/distance.png)
 
-![elevation](images/elevation.tiff)
+![elevation](images/elevation.png)
 
-![pace](images/pace.tiff)
+![pace](images/pace.png)
 
-![heart rate](images/heartrate.tiff)
+![heart rate](images/heartrate.png)
