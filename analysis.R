@@ -8,7 +8,7 @@
 
 
 # Load the csv file
-activities <- read.csv("path/to/your/strava/exports/activities.csv"
+activities <- read.csv("path/to/your/strava/exports/activities.csv")
 
 # Do some minimal clean up on the data to make things easier.
 
