@@ -56,11 +56,11 @@ ggplot() +
     mapping = aes(x = as.Date(ActFirstDayOfWeek), y = Distance, color = "coral1"), 
     linetype = "F1", 
     alpha = .75,
-    size = 0.8) + 
+    linewidth = 0.8) + 
   geom_col(data = runs, 
     mapping = aes(x = as.Date(ActDate), y = Distance, color="cyan1"), 
     alpha = .25,
-    size = 0.1) + 
+    linewidth = 0.1) + 
   labs(
     title = "Distance", 
     subtitle = "Distance per run and per week, km",
@@ -147,11 +147,11 @@ ggplot() +
     mapping = aes(x = as.Date(ActFirstDayOfWeek), y = ElevationGainFeet, color = "coral1"), 
     linetype = "F1", 
     alpha = .75,
-    size = 0.8) + 
+    linewidth = 0.8) + 
   geom_col(data = runs, 
     mapping = aes(x = as.Date(ActDate), y = ElevationGainFeet, color="cyan1"), 
     alpha = .25,
-    size = 0.1) + 
+    linewidth = 0.1) + 
   labs(
     title = "Elevation", 
     subtitle = "Elevation gain per run and per week, feet",
