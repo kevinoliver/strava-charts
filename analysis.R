@@ -5,10 +5,15 @@
 #
 # You will need to download an export of your Strava activities in CSV format. See instructions:
 # https://support.strava.com/hc/en-us/articles/216918437-Exporting-your-Data-and-Bulk-Export
-
+#
+# Some additional R packages are required, e.g.:
+# install.packages("hms", dependencies = TRUE)
+#
+# Run it from the command-line:
+# $ R < analysis.R --no-save
 
 # Load the csv file
-activities <- read.csv("path/to/your/strava/exports/activities.csv")
+activities <- read.csv("~/downloads/activities.csv")
 
 # Do some minimal clean up on the data to make things easier.
 
@@ -25,9 +30,9 @@ activities$ActFirstDayOfWeek <- cut.Date(as.Date(activities$ActDateAndTime), "we
 # Distance in Miles
 activities$DistanceMiles <- activities$Distance / 1.609
 # Pace
-activities$SecondsPerMile <- activities$`Moving Time` / activities$DistanceMiles 
+activities$SecondsPerMile <- activities$`Moving.Time` / activities$DistanceMiles
 # Elevation in Feet
-activities$ElevationGainFeet <- activities$`Elevation Gain` * 3.281
+activities$ElevationGainFeet <- activities$`Elevation.Gain` * 3.281
 
 # Filter down to just runs (and after i "started" running in August)
 runs <- activities[activities$ActivityType == 'Run', ]
@@ -35,16 +40,16 @@ runs <- activities[activities$ActivityType == 'Run', ]
 # I had a few random runs before this and dropping them made the visualizations better
 runs <- runs[as.Date(runs$ActDate) >= as.Date("2019-08-01"), ]
 
+library(ggplot2) # for ggplot
+library(dplyr) # for %>%
+
 # Data frame of per week sums
 weekly_runs <- runs %>%
   group_by(ActFirstDayOfWeek) %>%
   summarize(Distance = sum(Distance), ElevationGainFeet = sum(ElevationGainFeet))
 
-library(ggplot2) # for ggplot
-library(dplyr) # for %>%
-
 # high resolution rendering
-tiff("/path/to/where/you/want/the/output/distance.tiff", units="in", width=6, height=4, res=300)
+png("~/downloads/distance.png", units="in", width=6, height=4, res=300)
 # Plot both distance per run and week, together
 ggplot() + 
   geom_step(data = weekly_runs, 
@@ -86,7 +91,7 @@ ggplot() +
 dev.off()
 
 # Pace, in minutes per mile along with a smoothed trend line
-tiff("/path/to/where/you/want/the/output/pace.tiff", units="in", width=6, height=4, res=300)
+png("~/downloads/pace.png", units="in", width=6, height=4, res=300)
 ggplot(data = runs, mapping = aes(x = as.Date(ActDate), y = SecondsPerMile)) +
   geom_point(stat = "identity", show.legend = FALSE, color = "darkgoldenrod1") +
   geom_smooth(method = "gam", show.legend = FALSE, se = FALSE, color = "darkgoldenrod3") +
@@ -111,8 +116,8 @@ ggplot(data = runs, mapping = aes(x = as.Date(ActDate), y = SecondsPerMile)) +
 dev.off()
 
 # Average Heart Rate
-tiff("/path/to/where/you/want/the/output/heartrate.tiff", units="in", width=6, height=4, res=300)
-ggplot(data = runs, mapping = aes(x = as.Date(ActDate), y = `Average Heart Rate`)) +
+png("~/downloads/heartrate.png", units="in", width=6, height=4, res=300)
+ggplot(data = runs, mapping = aes(x = as.Date(ActDate), y = `Average.Heart.Rate`)) +
   geom_point(stat = "identity", show.legend = FALSE, color = "darkgoldenrod1") +
   geom_smooth(method = "gam", show.legend = FALSE, se = FALSE, color = "darkgoldenrod3") +
   labs(
@@ -136,7 +141,7 @@ ggplot(data = runs, mapping = aes(x = as.Date(ActDate), y = `Average Heart Rate`
 dev.off()
 
 # Plot elevation gain per run and week, together
-tiff("/path/to/where/you/want/the/output/elevation.tiff", units="in", width=6, height=4, res=300)
+png("~/downloads/elevation.png", units="in", width=6, height=4, res=300)
 ggplot() + 
   geom_step(data = weekly_runs, 
     mapping = aes(x = as.Date(ActFirstDayOfWeek), y = ElevationGainFeet, color = "coral1"), 
@@ -177,7 +182,7 @@ ggplot() +
 dev.off()
 
 # Plot cumulative distance
-tiff("/path/to/where/you/want/the/output/cumulative.tiff", units="in", width=6, height=4, res=300)
+png("~/downloads/cumulative.png", units="in", width=6, height=4, res=300)
 ggplot(data = runs, aes(x = as.Date(ActDate), y = cumsum(Distance))) +
   geom_line() +
   labs(
