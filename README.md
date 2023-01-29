@@ -1,4 +1,4 @@
-This creates some charts of from your Strava runs using R and ggplot. 
+This creates some charts from your Strava runs using R and ggplot. 
 
 It was inspired by [a Reddit post](https://www.reddit.com/r/Strava/comments/yc7qqy/visualising_12_months_of_running_with_strava/) (with better visuals) and [someone else who learned some R by way of their Strava data](https://towardsdatascience.com/using-r-to-analyse-my-strava-data-fc57188b4c51).
 
