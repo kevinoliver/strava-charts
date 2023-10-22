@@ -6,11 +6,10 @@
 # You will need to download an export of your Strava activities in CSV format. See instructions:
 # https://support.strava.com/hc/en-us/articles/216918437-Exporting-your-Data-and-Bulk-Export
 #
-# Some additional R packages are required, e.g.:
-# install.packages("hms", dependencies = TRUE)
-#
 # Run it from the command-line:
 # $ R < analysis.R --no-save
+
+install.packages("hms", dependencies = TRUE, repos = "http://cran.us.r-project.org")
 
 # Load the csv file
 activities <- read.csv("~/downloads/activities.csv")
