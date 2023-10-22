@@ -10,6 +10,7 @@
 # $ R < analysis.R --no-save
 
 install.packages("hms", dependencies = TRUE, repos = "http://cran.us.r-project.org")
+install.packages("ggplot2", dependencies = TRUE, repos = "http://cran.us.r-project.org")
 
 # Load the csv file
 activities <- read.csv("~/downloads/activities.csv")
