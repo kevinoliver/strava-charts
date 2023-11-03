@@ -33,6 +33,10 @@ activities$DistanceMiles <- activities$Distance / 1.609
 activities$SecondsPerMile <- activities$`Moving.Time` / activities$DistanceMiles
 # Elevation in Feet
 activities$ElevationGainFeet <- activities$`Elevation.Gain` * 3.281
+# Grade Adjusted Pace
+activities$GradeAdjustedPace <- activities$`Moving.Time` / activities$`Grade.Adjusted.Distance`
+# Efficiency Factor
+activities$EfficiencyFactor <- activities$GradeAdjustedPace / activities$`Average.Heart.Rate`
 
 # Filter down to just runs (and after i "started" running in August)
 runs <- activities[activities$ActivityType == 'Run', ]
@@ -208,3 +212,26 @@ ggplot(data = runs, aes(x = as.Date(ActDate), y = cumsum(Distance))) +
   scale_y_continuous(expand = expansion(mult = c(0, 0.1))) # removes the padding under the x-axis
 dev.off()
 
+# Plot efficiency factor
+png("~/downloads/efficiencyfactor.png", units="in", width=6, height=4, res=300)
+ggplot(data = runs, mapping = aes(x = as.Date(ActDate), y = EfficiencyFactor)) +
+  geom_point(stat = "identity", show.legend = FALSE, color = "darkgoldenrod1") +
+  geom_smooth(method = "gam", show.legend = FALSE, se = FALSE, color = "darkgoldenrod3") +
+  labs(
+    title = "Efficiency factor",
+    subtitle = "Grade adjusted pace / heart rate, higher is more efficient",
+    x = element_blank(),
+    y = element_blank()) +
+  theme_light() +
+  theme(
+    plot.title = element_text(colour = "goldenrod4", face = "bold"),
+    plot.subtitle = element_text(colour = "goldenrod4", face = "bold"),
+    axis.text.x = element_text(colour = "goldenrod4", size = 10, angle = 90, hjust = 1, vjust = 0.5),
+    axis.text.y = element_text(colour = "goldenrod4", size = 0),
+    axis.ticks = element_blank(), # remove tick marks
+    panel.grid.major.x = element_blank(), # remove vertical grid lines
+    panel.border = element_blank() # remove border around graph
+  ) +
+  scale_x_date(date_breaks = "3 months", date_labels = "%b %Y", minor_breaks = NULL) +
+  scale_color_identity(breaks = c("darkgoldenrod1", "darkgoldenrod3"))
+dev.off()
