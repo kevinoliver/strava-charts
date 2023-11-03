@@ -40,6 +40,9 @@ runs <- activities[activities$ActivityType == 'Run', ]
 # I had a few random runs before this and dropping them made the visualizations better
 runs <- runs[as.Date(runs$ActDate) >= as.Date("2019-08-01"), ]
 
+# Filter out sketchy data
+runs <- runs[runs$SecondsPerMile >= 300, ]
+
 library(ggplot2) # for ggplot
 library(dplyr) # for %>%
 
